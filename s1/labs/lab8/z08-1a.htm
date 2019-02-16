@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<title>HTML-форма: формирование таблицы</title>
+	</head>
+	<body>
+		<form action = "z08-1b.php" method = "POST" style="width: 300px; margin: 0 auto;">
+			<fieldset>
+				<legend>&nbsp;Формирование тиблицы:&nbsp;</legend>
+				<p>Выберите горизонтальное расположение:</p>
+				<p>
+					<label><input type = "radio" name = "align" value = "left"> Слева<br></label>
+					<label><input type = "radio" name = "align" value = "center"> По центру<br></label>
+					<label><input type = "radio" name = "align" value = "right"> Справа<br></label>
+				</p>
+				<p>Выберите вертикальное расположение:</p>
+				<p>
+					<label><input type = "checkbox" name = "valign" value = "top"> Сверху <br></label>
+					<label><input type = "checkbox" name = "valign" value = "middle"> Посередине <br></label>
+					<label><input type = "checkbox" name = "valign" value = "bottom"> Внизу <br></label>
+				</p>
+				<p><input type = "submit" name = "doaction" value = "Отправить" style="width:290px; height:25px;"><br></p>
+			</fieldset>
+		</form>
+	</body>
+</html>
