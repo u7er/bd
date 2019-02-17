@@ -1,7 +1,7 @@
 
 begin
   p_l3_t3.getSal('London');
-  p_l3_t3.getCust('London');  
+  p_l3_t3.getCust('San Jose');  
 end;
 
 
