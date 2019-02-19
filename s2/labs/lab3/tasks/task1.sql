@@ -26,7 +26,7 @@ begin
 end;
 
 begin
-  change_dep(5, 1);
+  change_dep(1, 5);
 end;
 
 select * from dep; 

@@ -1,7 +1,9 @@
 
 begin
+  dbms_output.put_line(f_task2(15.62));
   dbms_output.put_line(f_task2(5));
-  dbms_output.put_line(f_task2(.34));
+  dbms_output.put_line(f_task2(0));
+  dbms_output.put_line(f_task2(.93));
 end;
 
 -- function
