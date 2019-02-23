@@ -30,3 +30,5 @@ begin
 end;
 
 select * from dep; 
+
+drop table dep;

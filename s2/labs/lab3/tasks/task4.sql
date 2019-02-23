@@ -49,6 +49,6 @@ end p_l3_t4;
 
 -- call getMax and getMin
 begin 
-  p_l3_t4.getMinRab('Short', 'Middle', 'Long');
+  p_l3_t4.getMinRab('Short', 'Middle', 'Lo4534534534534ng');
   p_l3_t4.getMaxRab('Short', 'Middle', 'Long');
 end;

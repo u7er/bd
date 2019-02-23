@@ -6,6 +6,8 @@ begin
   dbms_output.put_line(f_task2(.93));
 end;
 
+select f_task2(amt) from ord;
+
 -- function
 create or replace function f_task2(f_amt in number) return varchar2 is
   p_int_last  varchar2(1);

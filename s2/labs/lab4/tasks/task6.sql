@@ -9,7 +9,8 @@ select * from user_tab_privs;
 -- vse
 select * from table_privileges where owner = 'BR23';
 
-revoke select on br23.sal from up2;
+revoke select on br23.sal from public;
 revoke select on br23.ord from up1;
 
-
+-- vse posle revoke
+select * from table_privileges where owner = 'BR23';
