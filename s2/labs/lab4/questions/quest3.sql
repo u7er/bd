@@ -1,7 +1,6 @@
 
 create or replace trigger trig_on_cust
 before insert on cust
-for each row
 declare
   max_ind number(6);
 begin

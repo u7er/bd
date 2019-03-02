@@ -8,6 +8,9 @@ create or replace trigger l4q1_trigger
 after insert on sal
 declare
   p_owner varchar2(20);
+  cursor cur is
+         select owner
+         from all_objects where object_name = 'SAL';
 begin
   select owner into p_owner 
   from all_objects where object_name = 'SAL';
@@ -15,8 +18,6 @@ begin
     insert into l4q1_table values (user, sysdate, 'insert');
   end if;
 end;
-
-
 
 
 
