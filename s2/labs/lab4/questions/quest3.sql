@@ -1,19 +1,21 @@
 
-create or replace trigger trig_on_cust
+create sequence sdf
+start with 2020
+increment by 1;
+
+
+create or replace trigger qwerty
 before insert on cust
+for each row
 declare
-  max_ind number(6);
 begin
-  select max(cnum) + 1 into max_ind
-  from cust;
-  
-  insert into cust (cnum, cname, city, rating, snum)
-  values (max_ind, :new.cname, :new.city, :new.rating, :new.snum);
+  :new.cnum := sdf.nextval;
 end;
 
 select * from cust;
-
-insert into cust (cname, city, rating, snum)
-  values ('John', 'NSK', 999, 1002);
+drop trigger qwerty;
+insert into cust (cnum, cname, city, rating, snum)
+  values (null, 'Petr', 'NSK', 999, 1002);
   
   
+select * from cust;
