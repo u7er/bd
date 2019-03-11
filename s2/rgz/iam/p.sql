@@ -114,7 +114,59 @@ exception
 end;
 
 create or replace view qw_builder as
-       select * from builders b, build_types t
-       where b.builder_id = t.builder_builder_id;
+       select distinct builder_name, build_id, build_type, builder_city
+       from builders b, build_types t
+       where b.builder_id != 10;
+
+select * from qw_builder;
+
+-- two's package
+
+create or replace package anyc is
+       procedure act_clear_tables;
+       procedure act_fill_tables;
+       procedure smth_change(c_builder_name in varchar2);
+end;
+
+create or replace package body anyc is
+       procedure act_clear_tables is
+         begin
+           actions.clear_tables;
+         end;
        
-select count(*) from qw_builder;
+       procedure act_fill_tables is
+         begin
+           actions.fill_tables;
+         end;
+         
+       procedure smth_change(c_builder_name in varchar2) is
+         type t_builder_builder_id is table of build_types.builder_builder_id%type;
+         type t_build_id is table of     build_types.build_id%type;
+         type t_build_type is table of   build_types.build_type%type;
+         type t_builder_city is table of build_types.builder_city%type;
+         p_builder_builder_id t_builder_builder_id;
+         p_build_id t_build_id;
+         p_build_type t_build_type;
+         p_builder_city t_builder_city;
+         
+         cursor get_smeta(a_builder_name in varchar2) is
+           select t.build_id, t.builder_builder_id, t.build_type, t.builder_city
+           from build_types t
+           where t.builder_builder_id in (select builder_id from builders where builder_name != a_builder_name);
+           
+         begin
+           open get_smeta(c_builder_name);
+           fetch get_smeta bulk collect into p_build_id, p_builder_builder_id, p_build_type, p_builder_city;
+           close get_smeta;
+           
+           dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
+           for it in p_build_id.first..p_build_id.last
+             loop
+               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
+             end loop;
+         end;
+end;
+
+begin
+  anyc.smth_change('Builder1');
+end;
