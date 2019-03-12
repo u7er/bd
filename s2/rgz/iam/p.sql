@@ -38,40 +38,32 @@ create or replace package body actions is
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-         
          insert into builders values (bldr_seq.nextval, 'Builder2');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-
          insert into builders values (bldr_seq.nextval, 'Builder3');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type5', null);
-
          insert into builders values (bldr_seq.nextval, 'Builder4');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into builders values (bldr_seq.nextval, 'Builder5');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into builders values (bldr_seq.nextval, 'Builder6');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into builders values (bldr_seq.nextval, 'Builder7');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into builders values (bldr_seq.nextval, 'Builder8');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
-
-
          commit;
        end;
        
