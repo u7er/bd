@@ -96,7 +96,7 @@ select * from build_types;
 
 -- trigger
 create or replace trigger tr_del_from_builders
-after delete on builders 
+before delete on builders 
 declare
   p_owner varchar2(20);
 begin
