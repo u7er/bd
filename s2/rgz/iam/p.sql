@@ -95,22 +95,27 @@ select * from builders;
 select * from build_types;
 
 -- trigger
-create or replace trigger tr_del_from_builders
-before delete on builders 
+delete from br23.build_types where build_id = 33;
+
+create or replace trigger tr_del_from_build_types
+before delete on build_types
 declare
-  p_owner varchar2(20);
+  p_owner varchar2(20) := 'empty';
+  no_accept exception;
 begin
   select owner into p_owner
   from all_objects
-  where object_name = 'BUILDERS' and owner = user; 
-  if p_owner != user then
+  where object_name = 'BUILD_TYPES' and owner = user; 
+  if p_owner = 'empty' then
     raise no_accept;
   end if;
 exception
   when no_accept then
-    dmbs_output.put_line('You are not a owner');
+    dbms_output.put_line('You are not a owner');
+    raise;
     when others then
-      dmbs_output.put_line('You are has not table BUILDERS');
+      dbms_output.put_line('You are has not table BUILD_TYPES');
+      raise;
 end;
 
 create or replace view qw_builder as
@@ -132,11 +137,17 @@ create or replace package body anyc is
        procedure act_clear_tables is
          begin
            actions.clear_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_clear_tables');
          end;
        
        procedure act_fill_tables is
          begin
            actions.fill_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_fill_tables');
          end;
          
        procedure smth_change(c_builder_name in varchar2) is
@@ -164,8 +175,17 @@ create or replace package body anyc is
              loop
                dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
              end loop;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in smth_change');
          end;
 end;
+
+grant select on qw_builder to public;
+grant execute on anyc to up1;
+
+grant delete, select on builders to up1;
+grant delete, select on build_types to up1;
 
 begin
   anyc.smth_change('Builder1');
