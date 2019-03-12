@@ -173,7 +173,7 @@ create or replace package body anyc is
          exception
            when others then
              dbms_output.put_line('Unknown error in smth_change');
-         end;
+         end; 
 end;
 
 grant select on qw_builder to public;
@@ -185,3 +185,5 @@ grant delete, select on build_types to up1;
 begin
   anyc.smth_change('Builder1');
 end;
+
+

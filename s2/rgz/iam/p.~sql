@@ -81,6 +81,7 @@ end;
 
 begin
   actions.clear_tables;
+  -- test
 end;
 
 select * from builders;
