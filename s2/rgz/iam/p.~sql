@@ -119,9 +119,11 @@ exception
 end;
 
 create or replace view qw_builder as
-       select distinct builder_name, build_id, build_type, builder_city
-       from builders b, build_types t
-       where b.builder_id != 10;
+       select distinct builder_name, build_id, build_type, builder_city 
+       from BUILD_TYPES t, builders b
+       where t.builder_builder_id in 
+             (select b.builder_id from builders b where b.builder_id < 32);
+
 
 select * from qw_builder;
 

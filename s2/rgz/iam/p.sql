@@ -38,40 +38,32 @@ create or replace package body actions is
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-         
          insert into builders values (bldr_seq.nextval, 'Builder2');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-
          insert into builders values (bldr_seq.nextval, 'Builder3');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type5', null);
-
          insert into builders values (bldr_seq.nextval, 'Builder4');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into builders values (bldr_seq.nextval, 'Builder5');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into builders values (bldr_seq.nextval, 'Builder6');
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into builders values (bldr_seq.nextval, 'Builder7');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-        insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into builders values (bldr_seq.nextval, 'Builder8');
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
          insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
-
-
          commit;
        end;
        
@@ -119,9 +111,11 @@ exception
 end;
 
 create or replace view qw_builder as
-       select distinct builder_name, build_id, build_type, builder_city
-       from builders b, build_types t
-       where b.builder_id != 10;
+       select distinct builder_name, build_id, build_type, builder_city 
+       from BUILD_TYPES t, builders b
+       where t.builder_builder_id in 
+             (select b.builder_id from builders b where b.builder_id < 32);
+
 
 select * from qw_builder;
 
