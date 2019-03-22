@@ -84,6 +84,21 @@ begin
   actions.fill_tables;
 end;
 
+begin
+  actions.clear_tables;
+end;
 select * from nominations;
 select * from films;
+
+
+
+
+
+
+
+
+
+
+
+
   
