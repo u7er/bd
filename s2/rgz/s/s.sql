@@ -90,6 +90,27 @@ end;
 select * from nominations;
 select * from films;
 
+select to_char(sysdate, 'hh24/mi/ss') from dual;
+select sysdate from dual;
+
+--  > to_date('hr24/mm/')
+create or replace trigger tr
+before delete on films
+declare
+  no_accept exception;
+begin
+  if to_char(sysdate, 'hh24/mi/ss') > to_char('20/00/00', 'hh24/mi/ss') and to_char(sysdate, 'hh24/mi/ss') < to_char('12/00/00', 'hh24/mi/ss') then
+    raise no_accept;
+  end if;
+exception
+  when no_accept then
+    dbms_output.put_line('You are not a owner');
+    raise;
+    when others then
+      dbms_output.put_line('You are has not table BUILD_TYPES');
+      raise;
+end;
+
 
 
 
