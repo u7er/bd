@@ -87,36 +87,57 @@ end;
 begin
   actions.clear_tables;
 end;
+
 select * from nominations;
 select * from films;
 
-select to_char(sysdate, 'hh24/mi/ss') from dual;
-select sysdate from dual;
-
---  > to_date('hr24/mm/')
 create or replace trigger tr
 before delete on films
 declare
-  no_accept exception;
+  no_work_time exception;
 begin
-  if to_char(sysdate, 'hh24/mi/ss') > to_char('20/00/00', 'hh24/mi/ss') and to_char(sysdate, 'hh24/mi/ss') < to_char('12/00/00', 'hh24/mi/ss') then
-    raise no_accept;
+  if to_char(sysdate, 'hh24/mi/ss') > to_char('20/00/00', 'hh24/mi/ss') or to_char(sysdate, 'hh24/mi/ss') < to_char('12/00/00', 'hh24/mi/ss') then
+    raise no_work_time;
   end if;
 exception
-  when no_accept then
-    dbms_output.put_line('You are not a owner');
+  when no_work_time then
+    dbms_output.put_line('NO WORK TIME');
     raise;
     when others then
-      dbms_output.put_line('You are has not table BUILD_TYPES');
+      dbms_output.put_line('Something error');
       raise;
 end;
 
 
 
+select * from nominations;
+select * from films;
+
+create or replace view qw_get as
+       select
+       decode()
+       from films f, nominations n
+
+select distinct
+       f.fname,
+       decode(n.nname, 'Nomination1', 'X', null) "Nomin1",
+       decode(n.nname, 'Nomination2', 'X', null) "Nomin2",
+       decode(n.nname, 'Nomination3', 'X', null) "Nomin3",
+       decode(n.nname, 'Nomination4', 'X', null) "Nomin4",
+       decode(n.nname, 'Nomination4', 'X', null) "Nomin5",
+       decode(n.nname, 'Nomination4', 'X', null) "Nomin6",
+       decode(n.nname, 'Nomination4', 'X', null) "Nomin7",
+       decode(n.nname, 'Nomination4', 'X', null) "Nomin8"
+from films f, nominations n;
+
+select * from ranges;
 
 
 
-
+-- TODO: 2 paket
+-- TODO: func for change data in something table
+         -- and add exception
+-- TODO: set priveleges for all users db
 
 
 

@@ -134,6 +134,12 @@ select * from ranges;
 
 
 
+-- TODO: 2 paket
+-- TODO: func for change data in something table
+         -- and add exception
+-- TODO: set priveleges for all users db
+
+
 
 
 
