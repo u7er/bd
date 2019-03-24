@@ -181,11 +181,16 @@ end;
 
 select * from nominations;
 
-
-
-
 -- TODO: set priveleges for all users db
+grant select on qw_get to public;
+grant execute on paket to up1;
 
+grant delete, select on films to up1;
+grant delete, select on nominations to up1;
+
+begin
+  anyc.get_films_without_nomin('Nomination1');
+end;
 
 
 
