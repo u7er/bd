@@ -88,5 +88,34 @@ end;
 select * from os;
 select * from company;
 
+create or replace trigger tr_xam
+before update on os
+declare
+  p_owner varchar2(20) := 'empty';
+  no_accept exception;
+begin
+  select owner into p_owner
+  from all_objects
+  where object_name = 'OS' and owner = user; 
+  if p_owner = 'empty' then
+    raise no_accept;
+  end if;
+exception
+  when no_accept then
+    dbms_output.put_line('You are not a owner');
+    raise;
+    when others then
+      dbms_output.put_line('You are has not table OS');
+      raise;
+end;
+
+
+
+
+
+
+
+
+
 
 
