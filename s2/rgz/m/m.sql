@@ -51,19 +51,19 @@ create or replace package body supp is
            insert into company values (cid_seq.nextval, 'Company3', oid_seq.currval);
            
            insert into os values (oid_seq.nextval, 'Windows XP', '2002');
-           insert into company values (cid_seq.nextval, 'Company1', oid_seq.currval);
+           insert into company values (cid_seq.nextval, 'Company17', oid_seq.currval);
            
            insert into os values (oid_seq.nextval, 'Windows Vista', '2004');
-           insert into company values (cid_seq.nextval, 'Company1', oid_seq.currval);
+           insert into company values (cid_seq.nextval, 'Company12', oid_seq.currval);
            
            insert into os values (oid_seq.nextval, 'Windows 7', '2007');
            insert into company values (cid_seq.nextval, 'Company1', oid_seq.currval);
 
            insert into os values (oid_seq.nextval, 'Windows 8', '2008');
-           insert into company values (cid_seq.nextval, 'Company1', oid_seq.currval);
+           insert into company values (cid_seq.nextval, 'Company55', oid_seq.currval);
            
            insert into os values (oid_seq.nextval, 'Windows 10', '2010');
-           insert into company values (cid_seq.nextval, 'Company1', oid_seq.currval);
+           insert into company values (cid_seq.nextval, 'Company66', oid_seq.currval);
            
            commit;
          end;
@@ -88,6 +88,7 @@ end;
 select * from os;
 select * from company;
 
+-- trigger
 create or replace trigger tr_xam
 before update on os
 declare
@@ -109,8 +110,14 @@ exception
       raise;
 end;
 
+-- view
+create or replace view qw_company as
+       select o.oname, c.cname
+       from os o, company c
+       where o.oid = c.oid_oid
+       order by o.oname;
 
-
+select * from qw_company;
 
 
 
