@@ -139,7 +139,7 @@ create or replace package body puss is
 
        procedure single_rec is     
          begin
-           
+           -- TODO: varray
          end;
 end;
 

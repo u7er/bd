@@ -143,6 +143,12 @@ create or replace package body puss is
          end;
 end;
 
+-- set priveleges for all users db
+grant select on qw_company to public;
+grant execute on supp to up1;
+
+grant delete, select on os to up1;
+grant delete, select on company to up1;
 
 
 
