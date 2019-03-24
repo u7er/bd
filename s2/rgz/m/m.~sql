@@ -173,6 +173,9 @@ create or replace package body puss is
          end;
 end;
 
+begin
+  puss.single_rec;
+end;
 
 -- set priveleges for all users db
 grant select on qw_company to public;
