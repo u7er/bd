@@ -119,10 +119,29 @@ create or replace view qw_company as
 
 select * from qw_company;
 
+-- two package
+create or replace package puss is
+       procedure fill;
+       procedure clean;
+       procedure single_rec;
+end;
 
+create or replace package body puss is
+       procedure fill is
+         begin
+           supp.fill_tables;
+         end;
+       
+       procedure clean is
+         begin
+           supp.clear_tables;
+         end;
 
-
-
+       procedure single_rec is     
+         begin
+           
+         end;
+end;
 
 
 
