@@ -123,7 +123,10 @@ create or replace package paket is
        procedure get_films_without_nomin(c_nomin_name in varchar2);
 end;
 
-create or replace package body anyc is
+
+-- TODO: func for change data in something table
+         -- and add exception
+create or replace package body paket is
        procedure act_clear_tables is
          begin
            actions.clear_tables;
@@ -140,39 +143,47 @@ create or replace package body anyc is
              dbms_output.put_line('Unknown error in act_fill_tables');
          end;
          
-       procedure smth_change(c_builder_name in varchar2) is
-         type t_builder_builder_id is table of build_types.builder_builder_id%type;
-         type t_build_id is table of     build_types.build_id%type;
-         type t_build_type is table of   build_types.build_type%type;
-         type t_builder_city is table of build_types.builder_city%type;
-         p_builder_builder_id t_builder_builder_id;
-         p_build_id t_build_id;
-         p_build_type t_build_type;
-         p_builder_city t_builder_city;
+       procedure get_films_without_nomin(c_nomin_name in varchar2) is
+         type t_fid                         is table of films.fid%type;
+         type t_fname                       is table of films.fname%type;
+         type t_nname                       is table of nominations.nname%type;
+
+         p_fid                              t_fid;
+         p_fname                            t_fname;
+         p_nname                            t_nname;
          
-         cursor get_smeta(a_builder_name in varchar2) is
-           select t.build_id, t.builder_builder_id, t.build_type, t.builder_city
-           from build_types t
-           where t.builder_builder_id in (select builder_id from builders where builder_name != a_builder_name);
+         --             select distinct
+         --                    f.fid, f.fname, n.nname
+         --             from films f, nominations n 
+         --             where n.nname != 'Nomination1';
+         
+         cursor get_films(a_nomin_name in varchar2) is
+           select distinct
+                  f.fid, f.fname, n.nname
+           from films f, nominations n
+           where n.nname != a_nomin_name;
            
          begin
-           open get_smeta(c_builder_name);
-           fetch get_smeta bulk collect into p_build_id, p_builder_builder_id, p_build_type, p_builder_city;
-           close get_smeta;
+           open get_films(c_nomin_name);
+           fetch get_films bulk collect into p_fid, p_fname, p_nname;
+           close get_films;
            
-           dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
-           for it in p_build_id.first..p_build_id.last
+           dbms_output.put_line('Film id ' || ' ' || 'Name of film' || ' ' || 'Name of nomination');           
+           for it in p_fid.first..p_fid.last
              loop
-               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
+               dbms_output.put_line(p_fid(it) || '       ' || p_fname(it) || '       ' || p_nname(it));
              end loop;
          exception
            when others then
-             dbms_output.put_line('Unknown error in smth_change');
+             dbms_output.put_line('Unknown error in get_films_without_nomin');
          end; 
 end;
 
--- TODO: func for change data in something table
-         -- and add exception
+select * from nominations;
+
+
+
+
 -- TODO: set priveleges for all users db
 
 

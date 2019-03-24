@@ -114,19 +114,76 @@ select * from films;
 create or replace view qw_get as
        select distinct
           f.fid, f.fname, n.nname
-       from films f, nominations n
+       from films f, nominations n;
 
 -- TODO: 2 paket
-create or replace package anyc is
+create or replace package paket is
        procedure act_clear_tables;
        procedure act_fill_tables;
-       procedure smth_change(c_builder_name in varchar2);
+       procedure get_films_without_nomin(c_nomin_name in varchar2);
 end;
-
 
 
 -- TODO: func for change data in something table
          -- and add exception
+create or replace package body paket is
+       procedure act_clear_tables is
+         begin
+           actions.clear_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_clear_tables');
+         end;
+       
+       procedure act_fill_tables is
+         begin
+           actions.fill_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_fill_tables');
+         end;
+         
+       procedure get_films_without_nomin(c_nomin_name in varchar2) is
+         type t_fid                         is table of films.fid%type;
+         type t_fname                       is table of films.fname%type;
+         type t_nname                       is table of nominations.nname%type;
+
+         p_fid                              t_fid;
+         p_fname                            t_fname;
+         p_nname                            t_nname;
+         
+         --             select distinct
+         --                    f.fid, f.fname, n.nname
+         --             from films f, nominations n 
+         --             where n.nname != 'Nomination1';
+         
+         cursor get_films(a_nomin_name in varchar2) is
+           select distinct
+                  f.fid, f.fname, n.nname
+           from films f, nominations n
+           where n.nname != a_nomin_name;
+           
+         begin
+           open get_films(c_nomin_name);
+           fetch get_films bulk collect into p_fid, p_fname, p_nname;
+           close get_films;
+           
+           dbms_output.put_line('Film id ' || ' ' || 'Name of film' || ' ' || 'Name of nomination');           
+           for it in p_fid.first..p_fid.last
+             loop
+               dbms_output.put_line(p_fid(it) || '       ' || p_fname(it) || '       ' || p_nname(it));
+             end loop;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in get_films_without_nomin');
+         end; 
+end;
+
+select * from nominations;
+
+
+
+
 -- TODO: set priveleges for all users db
 
 
