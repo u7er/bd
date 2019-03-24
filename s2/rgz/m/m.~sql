@@ -121,12 +121,15 @@ select * from qw_company;
 
 -- two package
 create or replace package puss is
+       type minmax is varray(2) of varchar2(50);
        procedure fill;
        procedure clean;
        procedure single_rec;
 end;
 
 create or replace package body puss is
+       type t_minmax is varray(2) of varchar2(50);
+       p_minmax t_minmax;
        procedure fill is
          begin
            supp.fill_tables;
@@ -137,11 +140,39 @@ create or replace package body puss is
            supp.clear_tables;
          end;
 
-       procedure single_rec is     
+       procedure single_rec is
+         p_min_cname varchar2(50);
+         p_max_cname varchar2(50);
+         
+         not_fetch exception;
          begin
-           -- TODO: varray
+           -- get max
+           select 
+             max(c.cname) 
+             into p_max_cname
+           from company c;
+           -- get min
+           select 
+             min(c.cname) 
+             into p_min_cname
+           from company c;
+           p_minmax(0) := p_min_cname;
+           p_minmax(1) := p_max_cname;
+           
+           if p_min_cname = '' or p_max_cname = '' then
+             raise not_fetch;
+           end if;
+           
+           dbms_output.put_line('Max company name: ' || p_max_cname);
+           dbms_output.put_line('Min company name: ' || p_min_cname);
+           
+           exception
+             when not_fetch then
+               dbms_output.put_line('Data was not be fetching');
+               raise;
          end;
 end;
+
 
 -- set priveleges for all users db
 grant select on qw_company to public;
