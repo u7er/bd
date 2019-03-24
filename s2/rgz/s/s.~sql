@@ -108,33 +108,23 @@ exception
       raise;
 end;
 
-
-
 select * from nominations;
 select * from films;
 
 create or replace view qw_get as
-       select
-       decode()
+       select distinct
+          f.fid, f.fname, n.nname
        from films f, nominations n
 
-select distinct
-       f.fname,
-       decode(n.nname, 'Nomination1', 'X', null) "Nomin1",
-       decode(n.nname, 'Nomination2', 'X', null) "Nomin2",
-       decode(n.nname, 'Nomination3', 'X', null) "Nomin3",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin4",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin5",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin6",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin7",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin8"
-from films f, nominations n;
-
-select * from ranges;
-
-
-
 -- TODO: 2 paket
+create or replace package anyc is
+       procedure act_clear_tables;
+       procedure act_fill_tables;
+       procedure smth_change(c_builder_name in varchar2);
+end;
+
+
+
 -- TODO: func for change data in something table
          -- and add exception
 -- TODO: set priveleges for all users db

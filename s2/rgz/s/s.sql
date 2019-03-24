@@ -108,33 +108,69 @@ exception
       raise;
 end;
 
-
-
 select * from nominations;
 select * from films;
 
 create or replace view qw_get as
-       select
-       decode()
-       from films f, nominations n
-
-select distinct
-       f.fname,
-       decode(n.nname, 'Nomination1', 'X', null) "Nomin1",
-       decode(n.nname, 'Nomination2', 'X', null) "Nomin2",
-       decode(n.nname, 'Nomination3', 'X', null) "Nomin3",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin4",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin5",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin6",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin7",
-       decode(n.nname, 'Nomination4', 'X', null) "Nomin8"
-from films f, nominations n;
-
-select * from ranges;
-
-
+       select distinct
+          f.fid, f.fname, n.nname
+       from films f, nominations n;
 
 -- TODO: 2 paket
+create or replace package paket is
+       procedure act_clear_tables;
+       procedure act_fill_tables;
+       procedure get_films_without_nomin(c_nomin_name in varchar2);
+end;
+
+create or replace package body anyc is
+       procedure act_clear_tables is
+         begin
+           actions.clear_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_clear_tables');
+         end;
+       
+       procedure act_fill_tables is
+         begin
+           actions.fill_tables;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in act_fill_tables');
+         end;
+         
+       procedure smth_change(c_builder_name in varchar2) is
+         type t_builder_builder_id is table of build_types.builder_builder_id%type;
+         type t_build_id is table of     build_types.build_id%type;
+         type t_build_type is table of   build_types.build_type%type;
+         type t_builder_city is table of build_types.builder_city%type;
+         p_builder_builder_id t_builder_builder_id;
+         p_build_id t_build_id;
+         p_build_type t_build_type;
+         p_builder_city t_builder_city;
+         
+         cursor get_smeta(a_builder_name in varchar2) is
+           select t.build_id, t.builder_builder_id, t.build_type, t.builder_city
+           from build_types t
+           where t.builder_builder_id in (select builder_id from builders where builder_name != a_builder_name);
+           
+         begin
+           open get_smeta(c_builder_name);
+           fetch get_smeta bulk collect into p_build_id, p_builder_builder_id, p_build_type, p_builder_city;
+           close get_smeta;
+           
+           dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
+           for it in p_build_id.first..p_build_id.last
+             loop
+               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
+             end loop;
+         exception
+           when others then
+             dbms_output.put_line('Unknown error in smth_change');
+         end; 
+end;
+
 -- TODO: func for change data in something table
          -- and add exception
 -- TODO: set priveleges for all users db
