@@ -21,6 +21,7 @@ create table build_types (
        builder_builder_id number(10) not null,
        build_type varchar2(50) not null,
        builder_city varchar2(50) null,
+       build_cash number(10) not null,
        
        constraint builder_id_fk foreign key (builder_builder_id) references builders(builder_id),
        constraint build_id_pk primary key (build_id)
@@ -35,35 +36,35 @@ create or replace package body actions is
        procedure fill_tables is
        begin
          insert into builders values (bldr_seq.nextval, 'Builder1');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 4000);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 3500);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null, 6105);
          insert into builders values (bldr_seq.nextval, 'Builder2');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 4321);
          insert into builders values (bldr_seq.nextval, 'Builder3');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type5', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 1000);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 2000);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null, 3000);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null, 4000);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type5', null, 5000);
          insert into builders values (bldr_seq.nextval, 'Builder4');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 87423);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 7564);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null, 98765);
          insert into builders values (bldr_seq.nextval, 'Builder5');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 1245);
          insert into builders values (bldr_seq.nextval, 'Builder6');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 6543);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 7564534);
          insert into builders values (bldr_seq.nextval, 'Builder7');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 745623);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 7756);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null, 349436);
          insert into builders values (bldr_seq.nextval, 'Builder8');
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null);
-         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type1', null, 2343243);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type2', null, 8765);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type3', null, 5346);
+         insert into build_types values (tps_seq.nextval, bldr_seq.currval, 'Type4', null, 76543);
          commit;
        end;
        
@@ -81,7 +82,6 @@ end;
 
 begin
   actions.clear_tables;
-  -- test
 end;
 
 select * from builders;
@@ -150,25 +150,28 @@ create or replace package body anyc is
          type t_build_id is table of     build_types.build_id%type;
          type t_build_type is table of   build_types.build_type%type;
          type t_builder_city is table of build_types.builder_city%type;
+         type t_build_cash is table of   build_types.build_cash%type;
          p_builder_builder_id t_builder_builder_id;
          p_build_id t_build_id;
          p_build_type t_build_type;
          p_builder_city t_builder_city;
+         p_build_cash t_build_cash;
          
          cursor get_smeta(a_builder_name in varchar2) is
-           select t.build_id, t.builder_builder_id, t.build_type, t.builder_city
-           from build_types t
-           where t.builder_builder_id in (select builder_id from builders where builder_name != a_builder_name);
+           select b.builder_id, b.builder_name, sum(t.build_cash)
+           from build_types t, builders b
+           where t.builder_builder_id = b.builder_id and b.builder_name != a_builder_name
+           group by b.builder_id, b.builder_name;
            
          begin
            open get_smeta(c_builder_name);
-           fetch get_smeta bulk collect into p_build_id, p_builder_builder_id, p_build_type, p_builder_city;
+           fetch get_smeta bulk collect into p_builder_builder_id, p_build_cash;
            close get_smeta;
            
            dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
            for it in p_build_id.first..p_build_id.last
              loop
-               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
+               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it) || p_build_cash(it));
              end loop;
          exception
            when others then
