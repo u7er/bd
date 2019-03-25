@@ -125,6 +125,7 @@ create or replace package puss is
        procedure fill;
        procedure clean;
        procedure single_rec;
+       procedure pk_change(c_old_os_name in varchar2, c_new_os_name in varchar2);
 end;
 
 create or replace package body puss is
@@ -170,6 +171,12 @@ create or replace package body puss is
              when not_fetch then
                dbms_output.put_line('Data was not be fetching');
                raise;
+         end;
+       procedure pk_change(c_old_os_name in varchar2, c_new_os_name in varchar2) is
+         begin
+           update os
+           set oname = c_new_os_name
+           where oname = c_old_os_name;
          end;
 end;
 
