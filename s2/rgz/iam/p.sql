@@ -147,14 +147,10 @@ create or replace package body anyc is
          
        procedure smth_change(c_builder_name in varchar2) is
          type t_builder_builder_id is table of build_types.builder_builder_id%type;
-         type t_build_id is table of     build_types.build_id%type;
-         type t_build_type is table of   build_types.build_type%type;
-         type t_builder_city is table of build_types.builder_city%type;
+         type t_builder_name is table of builders.builder_name%type;
          type t_build_cash is table of   build_types.build_cash%type;
          p_builder_builder_id t_builder_builder_id;
-         p_build_id t_build_id;
-         p_build_type t_build_type;
-         p_builder_city t_builder_city;
+         p_builder_name t_builder_name;
          p_build_cash t_build_cash;
          
          cursor get_smeta(a_builder_name in varchar2) is
@@ -165,17 +161,18 @@ create or replace package body anyc is
            
          begin
            open get_smeta(c_builder_name);
-           fetch get_smeta bulk collect into p_builder_builder_id, p_build_cash;
+           fetch get_smeta bulk collect into p_builder_builder_id, p_builder_name, p_build_cash;
            close get_smeta;
            
-           dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
-           for it in p_build_id.first..p_build_id.last
+           dbms_output.put_line('Builder name ' || ' ' || 'Builder id' || ' ' || 'Builder cash');           
+           for it in p_builder_builder_id.first..p_builder_builder_id.last
              loop
-               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it) || p_build_cash(it));
+               dbms_output.put_line(p_builder_name(it) || '            ' || p_builder_builder_id(it) || '       ' || p_build_cash(it));
              end loop;
          exception
            when others then
              dbms_output.put_line('Unknown error in smth_change');
+             dbms_output.put_line(sqlerrm);
          end; 
 end;
 

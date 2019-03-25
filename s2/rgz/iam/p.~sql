@@ -158,19 +158,20 @@ create or replace package body anyc is
          p_build_cash t_build_cash;
          
          cursor get_smeta(a_builder_name in varchar2) is
-           select t.build_id, t.builder_builder_id, t.build_type, t.builder_city, t.build_cash
-           from build_types t
-           where t.builder_builder_id in (select builder_id from builders where builder_name != a_builder_name);
+           select b.builder_id, b.builder_name, sum(t.build_cash)
+           from build_types t, builders b
+           where t.builder_builder_id = b.builder_id and b.builder_name != a_builder_name
+           group by b.builder_id, b.builder_name;
            
          begin
            open get_smeta(c_builder_name);
-           fetch get_smeta bulk collect into p_build_id, p_builder_builder_id, p_build_type, p_builder_city p_build_cash;
+           fetch get_smeta bulk collect into p_builder_builder_id, p_build_cash;
            close get_smeta;
            
            dbms_output.put_line('Builder name ' || ' ' || 'Build id' || ' ' || 'Build type' || ' ' || 'Builder city');           
            for it in p_build_id.first..p_build_id.last
              loop
-               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it));
+               dbms_output.put_line(p_builder_builder_id(it) || '            ' || p_build_id(it) || '       ' || p_build_type(it) || '          ' || p_builder_city(it) || p_build_cash(it));
              end loop;
          exception
            when others then
