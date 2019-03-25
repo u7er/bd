@@ -104,9 +104,11 @@ exception
     dbms_output.put_line('NO WORK TIME');
     raise;
     when others then
-      dbms_output.put_line('Something error');
+      dbms_output.put_line('Something error' || sqlerrm);
       raise;
 end;
+
+delete from films where films.fid = 2;
 
 select * from nominations;
 select * from films;
@@ -158,10 +160,10 @@ create or replace package body paket is
          --             where n.nname != 'Nomination1';
          
          cursor get_films(a_nomin_name in varchar2) is
-           select distinct
+           select
                   f.fid, f.fname, n.nname
            from films f, nominations n
-           where n.nname != a_nomin_name;
+           where n.nname != a_nomin_name and n.nid = f.nid_nid;
            
          begin
            open get_films(c_nomin_name);

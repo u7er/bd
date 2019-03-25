@@ -123,6 +123,7 @@ create or replace package paket is
        procedure act_clear_tables;
        procedure act_fill_tables;
        procedure get_films_without_nomin(c_nomin_name in varchar2);
+       procedure delete_nomin(c_nomin_name in varchar2);
 end;
 
 
@@ -179,6 +180,13 @@ create or replace package body paket is
            when others then
              dbms_output.put_line('Unknown error in get_films_without_nomin');
          end; 
+
+       procedure delete_nomin(c_nomin_name in varchar2) is
+         begin
+           delete from nominations
+           where nominations.nname = c_nomin_name;
+           commit;
+         end;
 end;
 
 select * from nominations;
