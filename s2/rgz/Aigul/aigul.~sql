@@ -1,4 +1,4 @@
-DROP TABLE APRODUCT;
+п»їDROP TABLE APRODUCT;
 DROP TABLE AITEM;
 
 /
@@ -35,21 +35,21 @@ CREATE OR REPLACE PACKAGE BODY tablePack IS
   arrProduct nameProductTab;
   PROCEDURE dataAdd IS
   BEGIN
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Булочка');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Торт');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Булка');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Хлебушек');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Пироженое');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Кекс');
-    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Круассан');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Р‘СѓР»РѕС‡РєР°');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'РўРѕСЂС‚');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Р‘СѓР»РєР°');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'РҐР»РµР±СѓС€РµРє');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'РџРёСЂРѕР¶РµРЅРѕРµ');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'РљРµРєСЃ');
+    INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'РљСЂСѓР°СЃСЃР°РЅ');
     
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Мука', 1);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Вода', 2);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Молоко', 3);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сахар', 7);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Масло', 2);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Соль', 6);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сода', 6);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РњСѓРєР°', 1);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Р’РѕРґР°', 2);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РњРѕР»РѕРєРѕ', 3);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РЎР°С…Р°СЂ', 7);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РњР°СЃР»Рѕ', 2);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РЎРѕР»СЊ', 6);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'РЎРѕРґР°', 6);
 END dataAdd;
     PROCEDURE dataDel IS 
     BEGIN   
@@ -108,11 +108,11 @@ CREATE OR REPLACE PACKAGE BODY helpPack IS
     ELSIF actTable = 'dataDel' THEN
       tablePack.dataDel;
     ELSE
-      DBMS_OUTPUT.PUT_LINE('Не выбрано действий над таблицами');
+      DBMS_OUTPUT.PUT_LINE('РќРµ РІС‹Р±СЂР°РЅРѕ РґРµР№СЃС‚РІРёР№ РЅР°Рґ С‚Р°Р±Р»РёС†Р°РјРё');
     END IF;
     EXCEPTION 
     WHEN OTHERS THEN 
-      DBMS_OUTPUT.PUT_LINE('ОШИБКА!');
+      DBMS_OUTPUT.PUT_LINE('РћРЁРР‘РљРђ!');
   END ADD_DEL_TablePack;
 END helpPack;
 /
@@ -121,7 +121,7 @@ BEGIN
   --HELPPACK.IN_DEL_TABLEPACK('dataIn');
 END;
 
--- Право на обращение к нашему представлению для всех пользователей
+-- РџСЂР°РІРѕ РЅР° РѕР±СЂР°С‰РµРЅРёРµ Рє РЅР°С€РµРјСѓ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЋ РґР»СЏ РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 GRANT SELECT ON myView TO PUBLIC;
--- Право на обращение к пакету только для UP1
+-- РџСЂР°РІРѕ РЅР° РѕР±СЂР°С‰РµРЅРёРµ Рє РїР°РєРµС‚Сѓ С‚РѕР»СЊРєРѕ РґР»СЏ UP1
 GRANT EXECUTE ON helpPack TO up1;

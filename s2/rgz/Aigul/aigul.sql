@@ -42,14 +42,16 @@ CREATE OR REPLACE PACKAGE BODY tablePack IS
     INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Пироженое');
     INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Кекс');
     INSERT INTO AITEM(ID, nameItem) VALUES(seqItem.NEXTVAL, 'Круассан');
-    
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Мука', 1);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Вода', 2);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Молоко', 3);
+-- Paul 3/27/19:
+-- select * from aitem;    
+-- FK fieldID static crappy. replace it pls.
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Мука', 1); --> static crappy (fieldID)
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Вода', 2); --> so, static crappy
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Молоко', 3); --> so on...
     INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сахар', 7);
     INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Масло', 2);
     INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Соль', 6);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сода', 6);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сода', 6); --> crappy heap is end.
 END dataAdd;
     PROCEDURE dataDel IS 
     BEGIN   
@@ -60,6 +62,19 @@ END dataAdd;
     END dataDel;
     END;
 /   
+-- Paul 3/27/19: trigger
+create or replace trigger tr_del_in_work_time
+before delete on aproduct
+declare
+  no_work_time exception;
+begin
+  if to_char(sysdate, 'HH24SS') > '2000' or to_char(sysdate, 'HH24SS') < '1200' then
+    raise no_work_time;
+  end if; 
+  exception
+    when no_work_time then
+      raise;
+end;
 BEGIN
     tablePack.dataAdd;
    -- tablePack.dataDel;
@@ -125,3 +140,12 @@ END;
 GRANT SELECT ON myView TO PUBLIC;
 -- Право на обращение к пакету только для UP1
 GRANT EXECUTE ON helpPack TO up1;
+
+-- Paul 3/27/19: self
+
+select * from aitem;
+
+
+
+
+
