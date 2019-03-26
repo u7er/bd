@@ -45,13 +45,13 @@ CREATE OR REPLACE PACKAGE BODY tablePack IS
 -- Paul 3/27/19:
 -- select * from aitem;    
 -- FK fieldID static crappy. replace it pls.
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Мука', 1); --> static crappy (fieldID)
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Вода', 2); --> so, static crappy
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Молоко', 3); --> so on...
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сахар', 7);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Масло', 2);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Соль', 6);
-    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сода', 6); --> crappy heap is end.
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Мука', 16); --> static crappy (fieldID)
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Вода', 17); --> so, static crappy
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Молоко', 18); --> so on...
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сахар', 19);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Масло', 20);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Соль', 21);
+    INSERT INTO APRODUCT(ID, nameProduct, fieldID) VALUES(seqProduct.NEXTVAL, 'Сода', 22); --> crappy heap is end.
 END dataAdd;
     PROCEDURE dataDel IS 
     BEGIN   
@@ -94,6 +94,8 @@ CREATE OR REPLACE PACKAGE helpPack IS
   err_msg VARCHAR2(500);
   PROCEDURE delProduct (idProduct IN number DEFAULT NULL);
   PROCEDURE ADD_DEL_TablePack (actTable IN VARCHAR2 DEFAULT NULL);
+  -- Paul 3/27/19:
+  procedure view_ingedients(c_product in varchar2);
 END helpPack;
 /
 
@@ -129,6 +131,33 @@ CREATE OR REPLACE PACKAGE BODY helpPack IS
     WHEN OTHERS THEN 
       DBMS_OUTPUT.PUT_LINE('ОШИБКА!');
   END ADD_DEL_TablePack;
+  
+  -- Paul 3/27/19: new procedure
+  procedure view_ingedients(c_product in varchar2) is
+      -- type table (how collection (unlimit size))
+      type t_prod_name is table of aproduct.nameproduct%type;
+      -- t_prod_name type varriable (for fetching data)
+      p_prod_name t_prod_name;
+      
+      cursor get_ingred(c_some_prod in varchar2) is
+        select p.nameproduct from aproduct p
+        where p.fieldid not in (select i.id from aitem i where i.nameitem = c_some_prod);
+        
+    begin
+      open get_ingred(c_product);
+      fetch get_ingred bulk collect into p_prod_name;
+      close get_ingred;
+      
+      for it in p_prod_name.first..p_prod_name.last
+      loop
+        dbms_output.put_line('Product: ' || it);
+      end loop;
+      
+      exception
+        when others then
+          raise;
+    end;
+  
 END helpPack;
 /
 BEGIN 
