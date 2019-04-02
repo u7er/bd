@@ -93,11 +93,14 @@ create or replace trigger tr_xam
 before update on os
 declare
   p_owner varchar2(20) := 'empty';
+  cursor cowner is
+       select owner from all_objects 
+       where object_name = 'OS' and owner = user;
   no_accept exception;
 begin
-  select owner into p_owner
-  from all_objects
-  where object_name = 'OS' and owner = user; 
+  open cowner;
+  fetch cowner into p_owner;
+  close cowner;
   if p_owner = 'empty' then
     raise no_accept;
   end if;
